@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket Sales Dashboard</title>
+<link rel="stylesheet" href="dashboard.css">
+<!-- PapaParse for CSV, Plotly for charts. CDN — no build step.
+     Both work on GitHub Pages / static hosts and on Windows local file:// -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+<!-- =====================================================================
+     UPLOAD SCREEN — first thing the user sees. Drop CSVs here.
+===================================================================== -->
+<div id="upload-screen">
+  <div class="upload-card">
+    <div class="upload-header">
+      <h1>🎟️ Ticket Sales Dashboard</h1>
+      <p>Drop your two CSV exports below — this year's and last year's. The
+         dashboard runs entirely in your browser; nothing is uploaded anywhere.
+         Works in any modern browser, on Windows / Mac / Linux, and also from
+         a static host like GitHub Pages.</p>
+    </div>
+
+    <div class="upload-grid">
+      <label class="file-drop" for="file-this">
+        <input type="file" id="file-this" accept=".csv" required>
+        <div class="file-drop-inner">
+          <div class="file-drop-icon">📅</div>
+          <div class="file-drop-label">This Year's CSV</div>
+          <div class="file-drop-hint">Click to select</div>
+        </div>
+      </label>
+
+      <label class="file-drop" for="file-last">
+        <input type="file" id="file-last" accept=".csv" required>
+        <div class="file-drop-inner">
+          <div class="file-drop-icon">🗓️</div>
+          <div class="file-drop-label">Last Year's CSV</div>
+          <div class="file-drop-hint">Click to select</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="upload-actions">
+      <button id="upload-btn">Load Dashboard</button>
+    </div>
+
+    <div id="upload-status"></div>
+
+    <details class="upload-help">
+      <summary>What columns does the CSV need?</summary>
+      <p>The dashboard expects the same columns as the sample files:
+         <code>SellDate</code>, <code>EventDate</code>, <code>EventTime</code>,
+         <code>SaleTotal</code>, <code>TicketCost</code>, <code>Quantity</code>,
+         <code>CompanyName</code>, <code>PrimaryPerformerName</code>,
+         <code>SecondaryPerformerName</code>, <code>RequestedPerformerTypeId</code>,
+         <code>VenueName</code>, <code>Section</code>, <code>Seats</code>,
+         <code>ShippingCompany</code>, <code>DeliveryType</code>,
+         <code>IsDelivered</code>, <code>IsCancelled</code>, <code>IsExpired</code>,
+         <code>InvoiceID</code>, <code>EventName</code>.
+         Extra columns are ignored.</p>
+    </details>
+  </div>
+</div>
+
+<!-- =====================================================================
+     APP SHELL — hidden until data loads. JS populates #sidebar and
+     #main-content imperatively.
+===================================================================== -->
+<div id="app-shell" style="display:none;">
+  <aside id="sidebar"></aside>
+  <main id="main-content"></main>
+</div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

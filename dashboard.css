@@ -1,0 +1,429 @@
+/* =========================================================================
+   Ticket Sales Dashboard — stylesheet
+   -------------------------------------------------------------------------
+   Design philosophy:
+     - Light, professional, calm. Blue accent matches Plotly THIS_COLOR.
+     - Cards with subtle borders rather than heavy shadows.
+     - The metric pills use the same blue accent so toggling them feels
+       directly connected to the chart they drive.
+     - Heat-styled tables get inline color from JS — CSS just gives them
+       structure (borders, typography, padding).
+========================================================================= */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #FAFBFC;
+  color: #0F172A;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =====================================================================
+   UPLOAD SCREEN
+===================================================================== */
+
+#upload-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #EAF1F8, #F4F8FB);
+}
+
+.upload-card {
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 40px 48px;
+  max-width: 720px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.upload-header h1 { margin: 0 0 12px 0; font-size: 1.8rem; }
+.upload-header p  { margin: 0 0 24px 0; color: #64748B; }
+
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.file-drop {
+  display: block;
+  border: 2px dashed #CBD5E1;
+  border-radius: 10px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  background: #F8FAFC;
+}
+.file-drop:hover { border-color: #2E86DE; background: #EFF6FB; }
+.file-drop input[type="file"] { display: none; }
+.file-drop-icon  { font-size: 2rem; margin-bottom: 8px; }
+.file-drop-label { font-weight: 600; }
+.file-drop-hint  { color: #94A3B8; font-size: 0.85rem; margin-top: 4px; }
+
+.upload-actions { display: flex; justify-content: center; margin-top: 16px; }
+#upload-btn {
+  background: #2E86DE; color: white;
+  border: none; border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#upload-btn:hover { background: #1B6CB7; }
+
+#upload-status {
+  text-align: center;
+  margin-top: 16px;
+  color: #64748B;
+  min-height: 24px;
+}
+
+.upload-help {
+  margin-top: 24px;
+  padding: 12px 16px;
+  background: #F8FAFC;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.upload-help summary { cursor: pointer; color: #475569; font-weight: 500; }
+.upload-help p       { margin: 12px 0 0 0; color: #64748B; }
+.upload-help code    { background: #E2E8F0; padding: 1px 4px; border-radius: 3px;
+                       font-size: 0.85rem; }
+
+/* =====================================================================
+   APP SHELL
+===================================================================== */
+
+#app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+#sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: #FAFBFC;
+  border-right: 1px solid #E2E8F0;
+  padding: 20px 14px;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+#main-content {
+  flex: 1;
+  padding: 24px 36px 80px 36px;
+  max-width: 1500px;
+  min-width: 0;
+}
+
+/* =====================================================================
+   SIDEBAR CONTENT
+===================================================================== */
+
+.sidebar-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.sidebar-pages { display: flex; flex-direction: column; gap: 2px; }
+
+.page-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: #334155;
+  user-select: none;
+  transition: background 0.1s;
+}
+.page-link:hover  { background: #EFF6FB; }
+.page-link.active { background: #2E86DE; color: white; font-weight: 600; }
+.page-icon        { width: 20px; text-align: center; }
+
+.sidebar-divider {
+  border-top: 1px solid #E2E8F0;
+  margin: 16px 0;
+}
+
+.sidebar-section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748B;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.sidebar-filter-label {
+  display: block;
+  font-size: 0.78rem;
+  color: #475569;
+  margin: 10px 0 4px 0;
+}
+
+.sidebar-filter {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #CBD5E1;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background: white;
+}
+
+.sidebar-stats {
+  font-size: 0.78rem;
+  color: #64748B;
+  line-height: 1.7;
+}
+
+/* Sport pills (multi-select) */
+.sport-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+.sport-pill {
+  background: white;
+  border: 1px solid #CBD5E1;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: #64748B;
+  transition: all 0.1s;
+}
+.sport-pill:hover  { border-color: #2E86DE; }
+.sport-pill.active {
+  background: #2E86DE;
+  border-color: #2E86DE;
+  color: white;
+  font-weight: 500;
+}
+
+/* =====================================================================
+   PAGE HEADER (rendered by pageHeader())
+===================================================================== */
+
+.page-header {
+  border-left: 5px solid #2E86DE;
+  padding: 4px 0 4px 16px;
+  margin: 4px 0 24px 0;
+}
+.page-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+.page-header p {
+  margin: 6px 0 0 0;
+  color: #64748B;
+  font-size: 0.95rem;
+}
+
+.section-h {
+  margin: 28px 0 8px 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0F172A;
+}
+.section-sub {
+  margin: 0 0 12px 0;
+  color: #64748B;
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+/* =====================================================================
+   KPI ROW
+===================================================================== */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+@media (max-width: 1100px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.kpi-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+.kpi-delta { margin-top: 4px; font-size: 0.85rem; }
+.delta-good { color: #15803D; font-weight: 500; }
+.delta-bad  { color: #B91C1C; font-weight: 500; }
+.delta-na   { color: #94A3B8; }
+
+/* =====================================================================
+   METRIC + DIMENSION PICKERS
+===================================================================== */
+
+.picker-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 14px 0 10px 0;
+}
+
+.metric-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.metric-label {
+  font-size: 0.82rem;
+  color: #475569;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.metric-pill {
+  background: white;
+  border: 1px solid #CBD5E1;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 0.84rem;
+  cursor: pointer;
+  color: #475569;
+  transition: all 0.1s;
+}
+.metric-pill:hover  { border-color: #2E86DE; color: #2E86DE; }
+.metric-pill.active {
+  background: #2E86DE; border-color: #2E86DE;
+  color: white; font-weight: 600;
+}
+
+.dim-picker { display: inline-flex; align-items: center; gap: 8px; }
+.dim-label  { font-size: 0.84rem; color: #475569; font-weight: 600; }
+.dim-picker select,
+.picker-row select {
+  padding: 5px 10px;
+  border: 1px solid #CBD5E1;
+  border-radius: 4px;
+  background: white;
+  font-size: 0.88rem;
+  min-width: 200px;
+}
+
+.picker-row input[type="range"] { vertical-align: middle; }
+
+/* =====================================================================
+   PLOT CONTAINERS
+===================================================================== */
+
+.plot {
+  width: 100%;
+  min-height: 380px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 1100px) { .two-col { grid-template-columns: 1fr; } }
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #94A3B8;
+  font-style: italic;
+}
+
+/* =====================================================================
+   DATA TABLES
+===================================================================== */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.data-table thead th {
+  background: #F1F5F9;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #334155;
+  border-bottom: 1px solid #E2E8F0;
+  white-space: nowrap;
+}
+.data-table tbody td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #F1F5F9;
+}
+.data-table tbody tr:hover { background: #F8FAFC; }
+.data-table .td-money,
+.data-table .td-pct,
+.data-table .td-int,
+.data-table .td-pctChange { text-align: right; font-variant-numeric: tabular-nums; }
+
+.data-expander {
+  margin: 20px 0;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background: white;
+  padding: 0;
+}
+.data-expander summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #334155;
+  user-select: none;
+}
+.data-expander summary:hover { background: #F8FAFC; }
+.data-expander[open] summary { border-bottom: 1px solid #E2E8F0; }
+.data-expander > *:not(summary) { padding: 16px; }
+
+/* =====================================================================
+   SCROLLBARS (subtle)
+===================================================================== */
+
+#sidebar::-webkit-scrollbar          { width: 8px; }
+#sidebar::-webkit-scrollbar-track    { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb    { background: #CBD5E1; border-radius: 4px; }
+#sidebar::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
